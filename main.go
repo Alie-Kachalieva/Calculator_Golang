@@ -2,21 +2,37 @@ package main
 
 import "net/http"
 
-// Expression2 представляет выражение.
-type Expression2 struct {
+// Expression представляет выражение.
+type Expression struct {
 	// Здесь определяются поля выражения
 }
 
 // Task представляет задачу.
-type Task {
+type Task struct {
+	// Здесь определяются поля задачи
 }
 
 // Orchestrator управляет выражениями и задачами.
 type Orchestrator struct {
-	expressions map[string]*Expression2
+	expressions map[string]*Expression
 	tasks       map[string]*Task
 	taskChan    chan *Task
 	resultChan  chan float64
+}
+
+// WorkerMonitor представляет интерфейс для мониторинга состояния воркеров.
+type WorkerMonitor interface {
+	MonitorWorkers()
+}
+
+func (o *Orchestrator) monitorWorkers() {
+	for {
+		// Здесь нужно реализовать мониторинг состояния воркеров
+		// Например, можно проверять количество активных воркеров и запускать новых при нехватке
+		// Также можно обрабатывать ошибки выполнения задач и принимать соответствующие действия
+		// Например, перезапускать воркеров или переносить задачи на других воркеров
+		// Здесь также подойдёт для отправка состояния воркеров в мониторинговую систему
+	}
 }
 
 // worker выполняет функциональность обработки задач.
@@ -56,7 +72,7 @@ func (o *Orchestrator) GetTaskForExecution(w http.ResponseWriter, r *http.Reques
 
 func main() {
 	orchestrator := &Orchestrator{
-		expressions: make(map[string]*Expression2),
+		expressions: make(map[string]*Expression),
 		tasks:       make(map[string]*Task),
 		taskChan:    make(chan *Task),
 		resultChan:  make(chan float64),
